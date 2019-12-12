@@ -30,8 +30,10 @@
  *
  * nums 的长度范围为 [0, 10000]。
  * 任何一个 nums[i] 将会是一个范围在 [-1000, 1000] 的整数。
+ * 时间复杂度： O(n)
+ * 空间复杂度：O(1)
  */
-class Solution
+class PivotIndexSolution
 {
 
     /**
