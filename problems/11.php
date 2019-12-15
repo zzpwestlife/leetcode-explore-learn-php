@@ -6,7 +6,7 @@
  *
  * 说明：你不能倾斜容器，且 n 的值至少为 2。
  */
-class Solution208
+class Solution11
 {
 
     /**
@@ -62,4 +62,4 @@ class Solution208
 
 $height = [1, 8, 6, 2, 5, 4, 8, 3, 7];
 //$height = [1, 1];
-echo (new Solution208())->maxArea($height) . PHP_EOL;
+echo (new Solution11())->maxArea($height) . PHP_EOL;
