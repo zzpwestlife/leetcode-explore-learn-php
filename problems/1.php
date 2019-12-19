@@ -39,48 +39,26 @@ class Solution1
 
     function twoSum($nums, $target)
     {
-        $length = count($nums);
-        if ($length < 2) {
-            return [0, 0];
-        }
-        // 思路 2： 排序后双指针
+        // 辅助数组，记录遍历到的 $nums, 键值颠倒
+        $found = [];
+        // foreach 效率高于 for
+        foreach ($nums as $i => $v) {
+            $diff = $target - $v;
+            // isset 效率高于 array_key_exists
+            if (isset($found[$diff])) {
+                return [$found[$diff], $i];
+            }
 
-        // associated array
-        $tmp = [];
-        foreach ($nums as $key => $value) {
-            $tmp['key' . $key] = $value;
-        }
-
-        asort($tmp);
-        for ($i = 0, $j = $length - 1; $i < $j;) {
-            $sum = $tmp[$i] + $tmp[$j];
-            if ($sum == $target) {
-                return [$this->getIndex($tmp, $nums[$i]), $this->getIndex($tmp, $nums[$j])];
-            } elseif ($sum < $target) {
-                $i++;
-            } else {
-                $j--;
+            if (!isset($found[$v])) {
+                $found[$v] = $i;
             }
         }
-
-        return [0, 0];
+        return $found;
     }
-
-    private function getIndex($arr, $value)
-    {
-        for ($i = 0; $i < count($arr); $i++) {
-            if ($arr[$i] == $value) {
-                return $i;
-            }
-        }
-
-        return -1;
-    }
-
 }
 
-$nums = [2, 7, 11, 15];
-$nums = [3, 2, 4];
-$target = 6;
+$nums = [11, 7, 2, 15];
+$nums = [3, 2, 3, 4];
+$target = 7;
 //echo implode(',', (new Solution1())->twoSum2($nums, $target)) . PHP_EOL;
 echo implode(',', (new Solution1())->twoSum($nums, $target)) . PHP_EOL;
