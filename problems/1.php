@@ -20,14 +20,14 @@ class Solution1
      * @param Integer $target
      * @return Integer[]
      */
-    function twoSum2($nums, $target)
+    function twoSum1($nums, $target)
     {
         $length = count($nums);
         if ($length < 2) {
             return [0, 0];
         }
         // 思路 1： 暴力解法
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < $length - 1; ++$i) {
             for ($j = $i + 1; $j < $length; ++$j) {
                 if ($nums[$i] + $nums[$j] == $target) {
                     return [$i, $j];
@@ -37,7 +37,7 @@ class Solution1
         return [0, 0];
     }
 
-    function twoSum($nums, $target)
+    function twoSum2($nums, $target)
     {
         // 辅助数组，记录遍历到的 $nums, 键值颠倒 （类似哈希表）
         $found = [];
@@ -55,10 +55,25 @@ class Solution1
         }
         return $found;
     }
+
+    function twoSum($nums, $target)
+    {
+        // 借助数组 模拟 hash
+        $map = array_flip($nums);
+        foreach ($nums as $key => $num) {
+            $diff = $target - $num;
+            if (isset($map[$diff]) && $key != $map[$diff]) {
+                return [$key, $map[$diff]];
+            }
+        }
+
+        return [];
+    }
 }
 
 $nums = [11, 7, 2, 15];
-$nums = [3, 2, 3, 4];
-$target = 7;
+$nums = [3, 2, 4];
+$nums = [3, 3];
+$target = 6;
 //echo implode(',', (new Solution1())->twoSum2($nums, $target)) . PHP_EOL;
 echo implode(',', (new Solution1())->twoSum($nums, $target)) . PHP_EOL;
