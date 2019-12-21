@@ -39,7 +39,7 @@ class Solution1
 
     function twoSum($nums, $target)
     {
-        // 辅助数组，记录遍历到的 $nums, 键值颠倒
+        // 辅助数组，记录遍历到的 $nums, 键值颠倒 （类似哈希表）
         $found = [];
         // foreach 效率高于 for
         foreach ($nums as $i => $v) {
