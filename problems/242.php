@@ -37,7 +37,7 @@ class Solution242
         return $s == $t;
     }
 
-    function isAnagram($s, $t)
+    function isAnagram2($s, $t)
     {
         if (strlen($s) != strlen($t)) {
             return false;
@@ -65,6 +65,40 @@ class Solution242
         }
 
         return true;
+    }
+
+    function isAnagram3($s, $t)
+    {
+        if (strlen($s) != strlen($t)) {
+            return false;
+        }
+
+        if ($s == $t) {
+            return true;
+        }
+
+        $sArr = $tArr = [];
+        for ($i = 0; $i < strlen($s); $i++) {
+            $sArr[$s[$i]][] = $s[$i];
+            $tArr[$t[$i]][] = $t[$i];
+        }
+
+        return $sArr == $tArr;
+    }
+
+    function isAnagram4($s, $t)
+    {
+        // 效率最高
+        // Return information about characters used in a string https://www.php.net/manual/en/function.count-chars.php
+        // mode = 0 - an array with the byte-value as key and the frequency of every byte as value. 和上一个方法返回结果类似
+        // 1 - same as 0 but only byte-values with a frequency greater than zero are listed.
+        return count_chars($s, 1) == count_chars($t, 1);
+    }
+
+    function isAnagram($s, $t)
+    {
+        // array_count_values — Counts all the values of an array
+        return array_count_values(str_split($s, 1)) == array_count_values(str_split($t, 1));
     }
 }
 

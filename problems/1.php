@@ -69,11 +69,12 @@ class Solution1
 
         return [];
     }
+
 }
 
 $nums = [11, 7, 2, 15];
 $nums = [3, 2, 4];
-$nums = [3, 3];
+$nums = [3, 2, 1];
 $target = 6;
 //echo implode(',', (new Solution1())->twoSum2($nums, $target)) . PHP_EOL;
 echo implode(',', (new Solution1())->twoSum($nums, $target)) . PHP_EOL;
