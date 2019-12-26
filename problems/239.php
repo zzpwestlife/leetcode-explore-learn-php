@@ -89,6 +89,6 @@ class Solution239
 }
 
 $nums = [1, 3, -1, -3, 5, 3, 6, 7];
-$nums = [1, -1];
-$k = 1;
+//$nums = [1, -1];
+$k = 3;
 echo implode(',', (new Solution239())->maxSlidingWindow($nums, $k)) . PHP_EOL;
