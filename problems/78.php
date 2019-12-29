@@ -52,11 +52,10 @@ class Solution78
 
         // split and drill down
         // 不选 not pick the number in this index
-        $tmp = $current;
-        $this->helper($nums, $index + 1, $tmp, $result);
+        $this->helper($nums, $index + 1, $current, $result);
         // 选
-        $tmp[] = $nums[$index];
-        $this->helper($nums, $index + 1, $tmp, $result);
+        $current[] = $nums[$index];
+        $this->helper($nums, $index + 1, $current, $result);
 
         // merge
 //        $result[] = $current;

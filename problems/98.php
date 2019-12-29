@@ -23,8 +23,7 @@ class Solution98
     function isValidBST1($root)
     {
         // 方法一：根据 BST 的定义，使用递归判断。需要两个变量分别记录当前子树的上界和下界
-        $lower = $upper = null;
-        return $this->helper($root, $lower, $upper);
+        return $this->helper($root, null, null);
     }
 
     function isValidBST2($root)
@@ -61,7 +60,7 @@ class Solution98
     private function helper($node, $lower, $upper)
     {
         // terminator
-        if ($node == null) {
+        if ($node === null) {
             return true;
         }
 
@@ -75,10 +74,12 @@ class Solution98
         }
 
         // drill in
+        // 左子树，更新上界
         if ($this->helper($node->left, $lower, $node->val) === false) {
             return false;
         }
 
+        // 右子树，更新下界
         if ($this->helper($node->right, $node->val, $upper) === false) {
             return false;
         }
