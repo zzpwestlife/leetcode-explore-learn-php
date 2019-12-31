@@ -107,4 +107,4 @@ $t = 'b';
 
 $s = "anagram";
 $t = "nagaram";
-var_dump((new Solution242)->isAnagram($s, $t)) . PHP_EOL;
+var_dump((new Solution242)->isAnagram6($s, $t)) . PHP_EOL;

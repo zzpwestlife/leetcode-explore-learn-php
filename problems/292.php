@@ -23,11 +23,26 @@ class Solution292
      * @param Integer $n
      * @return Boolean
      */
-    function canWinNim($n)
+    function canWinNim1($n)
     {
         return ($n % 4) > 0;
     }
+
+    function canWinNim($n)
+    {
+        // 位运算。按位与，将把 $a 和 $b 中都为 1 的位设为 1
+        // 为什么是 3？ 下面的测试结果可以给出答案
+        echo "\n Bitwise AND \n";
+        $values = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $format = '(%1$2d = %1$04b) = (%2$2d = %2$04b)'
+            . ' %3$s (%4$2d = %4$04b)' . "\n";
+        foreach ($values as $value) {
+            $result = $value & $n;
+            printf($format, $result, $value, '&', $n);
+        }
+        return boolval($n & 3);
+    }
 }
 
-$n = 7;
+$n = 4;
 var_dump((new Solution292())->canWinNim($n));
