@@ -65,6 +65,7 @@ class Solution98
         }
 
         // processor
+        // should lie between lower and upper
         if ($lower !== null && $node->val <= $lower) {
             return false;
         }
