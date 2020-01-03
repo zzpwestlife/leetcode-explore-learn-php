@@ -34,8 +34,7 @@ class Solution292
         // 为什么是 3？ 下面的测试结果可以给出答案
         echo "\n Bitwise AND \n";
         $values = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        $format = '(%1$2d = %1$04b) = (%2$2d = %2$04b)'
-            . ' %3$s (%4$2d = %4$04b)' . "\n";
+        $format = '(%1$2d = %1$04b) = (%2$2d = %2$04b)' . ' %3$s (%4$2d = %4$04b)' . "\n";
         foreach ($values as $value) {
             $result = $value & $n;
             printf($format, $result, $value, '&', $n);
