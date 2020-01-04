@@ -62,28 +62,32 @@ class Solution239
 
     function maxSlidingWindow($nums, $k)
     {
+        if ($k == 1) {
+            return $nums;
+        }
         $length = count($nums);
-        if ($length == 0 || $length < $k) {
+        if ($k > $length) {
             return [];
         }
+        if ($k == $length) {
+            return [max($nums)];
+        }
 
-        $window = $result = [];
-        foreach ($nums as $key => $value) {
-            // sliding
-            if ($key >= $window[0] + $k) {
+        $result = $window = [];
+        for ($i = 0; $i < $length; ++$i) {
+            if ($window && $window[0] + $k < $i + 1) {
                 array_shift($window);
             }
 
-            while ($window && $nums[end($window)] <= $value) {
+            while ($window && $nums[end($window)] <= $nums[$i]) {
                 array_pop($window);
             }
 
-            $window[] = $key;
-            if ($key >= $k - 1) {
+            $window[] = $i;
+            if ($i >= $k - 1) {
                 $result[] = $nums[$window[0]];
             }
         }
-
         return $result;
     }
 }
