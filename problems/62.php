@@ -21,40 +21,55 @@ class Solution62
      */
     function uniquePaths1($m, $n)
     {
-        if ($m <= 0 || $n <= 0) {
+        // dp: f(i, j) = f(i+1, j) + f(i, j+1) 自底向上
+        if ($m == 0 || $n == 0) {
             return 0;
         }
 
-        // array fill 填充二维数组
-        $map = array_fill(0, $m, array_fill(0, $n, 1));
-        // DP
+        if ($m == 1 || $n == 1) {
+            return 1;
+        }
+
+        $arr[$m - 1][$n - 1] = 0;
         for ($i = $m - 1; $i >= 0; --$i) {
             for ($j = $n - 1; $j >= 0; --$j) {
-                if ($i != $m - 1 && $j != $n - 1) {
-                    $map[$i][$j] = $map[$i + 1][$j] + $map[$i][$j + 1];
+                if ($i == $m - 1 || $j == $n - 1) {
+                    $arr[$i][$j] = 1;
+                } else {
+                    $arr[$i][$j] = $arr[$i + 1][$j] + $arr[$i][$j + 1];
                 }
             }
         }
 
-        return $map[0][0];
+        return $arr[0][0];
     }
 
     function uniquePaths($m, $n)
     {
-        $arr = [];
-        for ($i = 1; $i <= $m; $i++) {
-            for ($j = 1; $j <= $n; $j++) {
-                if ($i == 1 || $j == 1) {
-                    $arr[$i][$j] = 1;
-                } else {
-                    $arr[$i][$j] = $arr[$i - 1][$j] + $arr[$i][$j - 1];
-                }
-            }
+        // 递归 自顶向下
+        $memo = [];
+        return $this->helper($m, $n, $memo);
+    }
+
+    private function helper($m, $n, &$memo)
+    {
+        if ($m == 0 || $n == 0) {
+            return 0;
         }
-        return $arr[$m][$n];
+
+        if ($m == 1 || $n == 1) {
+            return 1;
+        }
+
+        // 备忘录
+        if (isset($memo[$m][$n])) {
+            return $memo[$m][$n];
+        }
+
+        return $this->helper($m - 1, $n, $memo) + $this->helper($m, $n - 1, $memo);
     }
 }
 
-$m = 3;
-$n = 2;
+$m = 6;
+$n = 5;
 echo (new Solution62())->uniquePaths($m, $n) . PHP_EOL;
