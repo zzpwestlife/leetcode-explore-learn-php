@@ -21,52 +21,45 @@ class Solution1093
     function sampleStats($count)
     {
         $min = -1;
-        $sum = $total = $mode = $median = $max = $avg = 0;
+        $max = $sum = $totalCount = $avg = $median = 0;
+        $mode = [];
         for ($i = 0; $i < 256; ++$i) {
-            if ($count[$i] > 0) {
+            if ($min < 0 && $count[$i]) {
                 $min = $i;
-                break;
             }
-        }
 
-        for ($i = 255; $i >= 0; --$i) {
-            if ($count[$i] > 0) {
+            if ($count[$i]) {
                 $max = $i;
-                break;
+                if (empty($mode) || $count[$i] > end($mode)) {
+                    $mode = [$i => $count[$i]];
+                }
             }
+
+            $totalCount += $count[$i];
+            $sum += $i * $count[$i];
         }
 
+        if ($totalCount) {
+            $avg = $sum / $totalCount;
+        }
+
+        // 中位数
+        $m1 = floor(($totalCount + 1) / 2);
+        $m2 = floor(($totalCount) / 2 + 1);
+        $currentCount = 0;
         for ($i = 0; $i < 256; ++$i) {
-            if ($count[$i] > 0) {
-                $total += $count[$i];
-                $sum += $i * $count[$i];
-            }
-        }
-        $avg = $sum / $total;
-        if ($total == 1) {
-            $median = $sum;
-        }
-
-        // 不管奇数个还是偶数个，中位数都可以表示为以下两个数的平均数
-        // 如一共有 4 个数字，中位数为第 2 和第 3 个数字的平均数
-        // 如一共有 5 个数字，中位数为第 3 和第 3 数字的平均数
-        $m1 = floor(($total + 1) / 2);
-        $m2 = floor($total / 2 + 1);
-        for ($i = 0, $cnt = 0; $total > 1 && $i < 256; ++$i) {
-            if ($cnt < $m1 && $cnt + $count[$i] >= $m1) {
+            if ($currentCount < $m1 && $currentCount + $count[$i] >= $m1) {
                 $median += $i / 2;
             }
 
-            if ($cnt < $m2 && $cnt + $count[$i] >= $m2) {
+            if ($currentCount < $m2 && $currentCount + $count[$i] >= $m2) {
                 $median += $i / 2;
             }
-            $cnt += $count[$i];
+
+            $currentCount += $count[$i];
         }
 
-        arsort($count);
-        $mode = key($count);
-
-        return [$min, $max, $avg, $median, $mode];
+        return [$min, $max, $avg, $median, key($mode)];
     }
 }
 
