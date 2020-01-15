@@ -22,6 +22,7 @@ class Solution1029
             return $sum;
         }
 
+        // 二维数组按某一规则排序，妙啊
         usort($costs, function ($a, $b) {
             if (($a[0] - $a[1]) == ($b[0] - $b[1])) return 0;
             return (($a[0] - $a[1]) < ($b[0] - $b[1])) ? -1 : 1;
@@ -39,6 +40,6 @@ class Solution1029
     }
 }
 
-$costs = [[10, 20], [30, 200], [400, 50], [30, 20]];
+$costs = [[10, 20], [50, 60], [30, 200], [400, 50], [30, 20]];
 
 echo (new Solution1029())->twoCitySchedCost($costs) . PHP_EOL;
