@@ -21,22 +21,24 @@ class Solution1093
     function sampleStats($count)
     {
         $min = -1;
-        $max = $sum = $totalCount = $avg = $median = 0;
-        $mode = [];
+        $max = PHP_INT_MAX;
+        $avg = $median = $mode = 0;
+        $sum = $totalCount = 0;
+        $maxCount = [];
         for ($i = 0; $i < 256; ++$i) {
-            if ($min < 0 && $count[$i]) {
+            if ($min < 0 && $count[$i] > 0) {
                 $min = $i;
             }
 
-            if ($count[$i]) {
+            if ($count[$i] > 0) {
                 $max = $i;
-                if (empty($mode) || $count[$i] > end($mode)) {
-                    $mode = [$i => $count[$i]];
-                }
             }
 
             $totalCount += $count[$i];
             $sum += $i * $count[$i];
+            if (empty($maxCount) || $count[$i] > key($maxCount)) {
+                $maxCount = [$count[$i] => $i];
+            }
         }
 
         if ($totalCount) {
@@ -44,22 +46,19 @@ class Solution1093
         }
 
         // 中位数
-        $m1 = floor(($totalCount + 1) / 2);
-        $m2 = floor(($totalCount) / 2 + 1);
+        $mid1 = (int)(($totalCount + 1) / 2);
+        $mid2 = $totalCount / 2 + 1;
         $currentCount = 0;
         for ($i = 0; $i < 256; ++$i) {
-            if ($currentCount < $m1 && $currentCount + $count[$i] >= $m1) {
+            if ($currentCount < $mid1 && $currentCount + $count[$i] >= $mid1) {
                 $median += $i / 2;
             }
-
-            if ($currentCount < $m2 && $currentCount + $count[$i] >= $m2) {
+            if ($currentCount < $mid2 && $currentCount + $count[$i] >= $mid2) {
                 $median += $i / 2;
             }
-
             $currentCount += $count[$i];
         }
-
-        return [$min, $max, $avg, $median, key($mode)];
+        return [$min, $max, $avg, $median, end($maxCount)];
     }
 }
 
