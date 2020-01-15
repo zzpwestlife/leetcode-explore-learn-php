@@ -41,6 +41,9 @@ class Solution334
             } else {
                 return true;
             }
+
+            echo 'small: ' . $small . PHP_EOL;
+            echo 'mid: ' . $mid . PHP_EOL;
         }
 
         return false;
@@ -48,4 +51,6 @@ class Solution334
 }
 
 $nums = [1, 2, 3, 4, 5];
+$nums = [5, 2, 3, 4, 5];
+$nums = [5, 2, 3, 1, 5];
 echo (new Solution334())->increasingTriplet($nums) . PHP_EOL;
