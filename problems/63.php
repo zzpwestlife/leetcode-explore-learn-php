@@ -20,33 +20,36 @@ class Solution63
      */
     function uniquePathsWithObstacles($obstacleGrid)
     {
-        // 要考虑各种边界条件
-        if (empty($obstacleGrid)
-            || $obstacleGrid[0][0] == 1
-            || end(end($obstacleGrid)) == 1) {
+        // dp
+        $rowCount = count($obstacleGrid);
+        $columnCount = count($obstacleGrid[0]);
+        $result = [];
+        if ($obstacleGrid[0][0] == 1 || $obstacleGrid[$rowCount - 1][$columnCount - 1] == 1) {
             return 0;
         }
 
-        // map 和障碍数组下标对应，防止混乱
-        $rowCount = count($obstacleGrid);
-        $columnCount = count($obstacleGrid[0]);
-        $map = array_fill(0, $rowCount, array_fill(0, $columnCount, null));
-        // 右下向左上 DP
-        for ($i = $rowCount - 1; $i >= 0; --$i) {
-            for ($j = $columnCount - 1; $j >= 0; --$j) {
-                if ($obstacleGrid[$i][$j] == 1) {
-                    $map[$i][$i] = $map[$i - 1][$j] = $map[$i][$j - 1] = 0;
-                } elseif ($i == $rowCount - 1 || $j == $columnCount - 1) {
-                    if (!isset($map[$i][$j])) {
-                        $map[$i][$j] = 1;
-                    }
-                } else {
+        $result[0][0] = 1;
+        // the first column
+        for ($i = 1; $i < $rowCount; ++$i) {
+            $result[$i][0] = ($obstacleGrid[$i][0] == 1 || $result[$i - 1][0] == 0) ? 0 : 1;
+        }
 
+        // the first row
+        for ($j = 1; $j < $columnCount; ++$j) {
+            $result[0][$j] = ($obstacleGrid[0][$j] == 1 || $result[0][$j - 1] == 0) ? 0 : 1;
+        }
+
+        // others
+        for ($i = 1; $i < $rowCount; ++$i) {
+            for ($j = 1; $j < $columnCount; ++$j) {
+                if ($obstacleGrid[$i][$j] == 1) {
+                    $result[$i][$j] = 0;
+                } else {
+                    $result[$i][$j] = $result[$i - 1][$j] + $result[$i][$j - 1];
                 }
             }
         }
-
-        return $map[0][0];
+        return $result[$rowCount - 1][$columnCount - 1];
     }
 }
 
@@ -54,5 +57,13 @@ class Solution63
 //$grid = [[0, 1]];
 //$grid = [[0, 0], [1, 1], [0, 0]];
 $grid = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0]];
+// $grid = [[0, 0, 0], [0, 1, 0], [0, 0, 0]];
+$grid = [[0, 0], [0, 0]];
+$grid = [[0, 1]];
+$grid = [[0, 0], [1, 1], [0, 0]];
+$grid = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0]];
+$grid = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0]];
+$grid = [[0, 0]];
+$grid = [[0, 0], [1, 0]];
 
 echo (new Solution63())->uniquePathsWithObstacles($grid) . PHP_EOL;
