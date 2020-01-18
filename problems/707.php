@@ -1,5 +1,4 @@
 <?php
-
 class MyLinkedList
 {
     protected $size;
@@ -11,9 +10,8 @@ class MyLinkedList
     {
         $this->size = 0;
         $this->dummyHead = new Node(null);
-        if (!empty($val)) {
-            $node = new Node($val);
-            $this->dummyHead->next = $node;
+        if ($val) {
+            $this->dummyHead->next = new Node($val);
             $this->size++;
         }
     }
@@ -22,19 +20,25 @@ class MyLinkedList
      * Get the value of the index-th node in the linked list. If the index is invalid, return -1.
      * @param Integer $index
      * @return Integer
+     * 获取链表中第 index 个节点的值。如果索引无效，则返回 -1
      */
     function get($index)
     {
-        if ($index < 0 || $index >= $this->size) {
+        if ($index < 0 || $index > $this->size - 1) {
             return -1;
         }
 
         $cur = $this->dummyHead;
-        for ($i = 0; $i <= $index; ++$i) {
+        for ($i = 0; $i < $index + 1; ++$i) {
             $cur = $cur->next;
         }
 
         return $cur->readNode();
+    }
+
+    public function size()
+    {
+        return $this->size;
     }
 
     /**
@@ -58,14 +62,17 @@ class MyLinkedList
     }
 
     /**
-     * Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. 
-     * If index is greater than the length, the node will not be inserted.
+     * Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted.
      * @param Integer $index
      * @param Integer $val
      * @return NULL
+     * 在链表中的第 index 个节点之前添加值为 val  的节点。
+     * 如果 index 等于链表的长度，则该节点将附加到链表的末尾。
+     * 如果 index 大于链表长度，则不会插入节点。如果 index 小于 0，则在头部插入节点。
      */
     function addAtIndex($index, $val)
     {
+        // 0-based index
         if ($index > $this->size) {
             return;
         }
@@ -74,12 +81,12 @@ class MyLinkedList
             $index = 0;
         }
 
-        $node = new Node($val);
         $cur = $this->dummyHead;
         for ($i = 0; $i < $index; ++$i) {
             $cur = $cur->next;
         }
 
+        $node = new Node($val);
         $node->next = $cur->next;
         $cur->next = $node;
         $this->size++;
@@ -89,15 +96,16 @@ class MyLinkedList
      * Delete the index-th node in the linked list, if the index is valid.
      * @param Integer $index
      * @return NULL
+     * 如果索引 index 有效，则删除链表中的第 index 个节点。
      */
     function deleteAtIndex($index)
     {
-        if ($index < 0 || $index >= $this->size) {
+        if ($index < 0 || $index > $this->size - 1) {
             return;
         }
 
         $cur = $this->dummyHead;
-        for ($i = 0; $i < $index - 1; ++$i) {
+        for ($i = 0; $i < $index; ++$i) {
             $cur = $cur->next;
         }
 
@@ -105,20 +113,16 @@ class MyLinkedList
         $this->size--;
     }
 
-    function dump()
+    public function dump()
     {
-        if ($this->size == 0) {
-            return [];
-        }
-
-        $return = [];
+        $string = 'dummyHead->';
         $cur = $this->dummyHead;
         for ($i = 0; $i < $this->size; ++$i) {
             $cur = $cur->next;
-            $return[] = $cur->readNode();
+            $string .= sprintf('%s(index:%d)->', $cur->readNode(), $i);
         }
 
-        return $return;
+        return $string . 'null(tail)';
     }
 }
 
@@ -148,30 +152,17 @@ class Node
     }
 }
 
-
-// $obj = new MyLinkedList();
-// $obj->addAtHead(7);
-// $obj->addAtTail(7);
-// $obj->addAtHead(9);
-// $obj->addAtTail(8);
-// $obj->addAtHead(6);
-// $obj->addAtHead(0);
-// echo implode(',', $obj->dump()) . PHP_EOL;
-// echo $obj->get(5) . PHP_EOL;
-// $obj->addAtHead(0);
-// echo $obj->get(2) . PHP_EOL;
-// echo $obj->get(5) . PHP_EOL;
-// $obj->addAtTail(4);
-// $obj->addAtIndex(3, 333);
-// $obj->deleteAtIndex(2);
-// echo implode(',', $obj->dump()) . PHP_EOL;
-
 $obj = new MyLinkedList();
-$obj->addAtHead(1);
-$obj->addAtTail(3);
-$obj->addAtIndex(1, 2);
-echo implode(',', $obj->dump()) . PHP_EOL;
-echo $obj->get(1) . PHP_EOL;
-$obj->deleteAtIndex(1);
-echo implode(',', $obj->dump()) . PHP_EOL;
-echo $obj->get(1) . PHP_EOL;
+$obj->addAtIndex(0, 0);
+$obj->addAtIndex(0, 1);
+$obj->addAtIndex(0, 2);
+$obj->addAtIndex(0, 3);
+$obj->addAtHead(22);
+$obj->addAtTail(33);
+echo $obj->dump() . PHP_EOL;
+$obj->deleteAtIndex($obj->size() - 1);
+echo $obj->dump() . PHP_EOL;
+$obj->deleteAtIndex($obj->size() - 1);
+echo $obj->dump() . PHP_EOL;
+$obj->deleteAtIndex($obj->size() - 1);
+echo $obj->dump() . PHP_EOL;
