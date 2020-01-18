@@ -27,21 +27,22 @@ function testFind($uf, $m)
     return ($t2 - $t1);
 }
 
-$size = 1000;
-$m = 1000;
-require_once './UnionFind1.php';
-$uf1 = new UnionFind1($size);
-// O(n) 最慢，测试时注意
-echo 'uf1 union: ' . testUnion('UnionFind1', $m) . PHP_EOL;
-// O(1)
-echo 'uf1 find: ' . testFind($uf1, $m) . PHP_EOL;
+$size = 100000;
+$m = 20000;
 
-require_once './UnionFind2.php';
-$uf2 = new UnionFind2($size);
-// O(h)
-echo 'uf2 union: ' . testUnion($uf2, $m) . PHP_EOL;
-// O(h)
-echo 'uf2 find: ' . testFind($uf2, $m) . PHP_EOL;
+//require_once './UnionFind1.php';
+//$uf1 = new UnionFind1($size);
+//// O(n) 最慢，测试时注意
+//echo 'uf1 union: ' . testUnion('UnionFind1', $m) . PHP_EOL;
+//// O(1)
+//echo 'uf1 find: ' . testFind($uf1, $m) . PHP_EOL;
+//
+//require_once './UnionFind2.php';
+//$uf2 = new UnionFind2($size);
+//// O(h)
+//echo 'uf2 union: ' . testUnion($uf2, $m) . PHP_EOL;
+//// O(h)
+//echo 'uf2 find: ' . testFind($uf2, $m) . PHP_EOL;
 
 require_once './UnionFind3.php';
 $uf3 = new UnionFind3($size);
@@ -56,3 +57,17 @@ $uf4 = new UnionFind4($size);
 echo 'uf4 union: ' . testUnion($uf4, $m) . PHP_EOL;
 // O(h)
 echo 'uf4 find: ' . testFind($uf4, $m) . PHP_EOL;
+
+require_once './UnionFind5.php';
+$uf5 = new UnionFind5($size);
+// O(h)
+echo 'uf5 union: ' . testUnion($uf5, $m) . PHP_EOL;
+// O(h)
+echo 'uf5 find: ' . testFind($uf5, $m) . PHP_EOL;
+
+require_once './UnionFind6.php';
+$uf6 = new UnionFind6($size);
+// O(h)
+echo 'uf6 union: ' . testUnion($uf6, $m) . PHP_EOL;
+// O(h)
+echo 'uf6 find: ' . testFind($uf6, $m) . PHP_EOL;
