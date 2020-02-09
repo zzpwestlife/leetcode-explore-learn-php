@@ -52,34 +52,44 @@ class Solution
      * @param Integer $k
      * @return NULL
      */
-    function rotate(&$nums, $k)
+    function rotate1(&$nums, $k)
     {
         $len = count($nums);
+        if ($len <= 1 || $k == 0) {
+            return $nums;
+        }
         if ($k > $len) {
             $k = $k % $len;
         }
-        $nums = $this->reverse($nums, 0, $len - 1);
-        $nums = $this->reverse($nums, 0, $k - 1);
-        $nums = $this->reverse($nums, $k, $len - 1);
+
+        $new = array_slice($nums, -$k);
+        $new = array_merge($new, array_slice($nums, 0, $len - $k));
+        $nums = $new;
         return $nums;
     }
 
-    private function reverse($arr, $left, $right)
+    function rotate(&$nums, $k)
     {
-        while ($left <= $right) {
-            $tmp = $arr[$left];
-            $arr[$left] = $arr[$right];
-            $arr[$right] = $tmp;
-            $left++;
-            $right--;
+        $len = count($nums);
+        if ($len <= 1 || $k % $len == 0) {
+            return $nums;
         }
 
-        return $arr;
+        if ($k > $len) {
+            $k = $k % $len;
+        }
+
+        $nums = array_reverse($nums);
+        $part1 = array_reverse(array_slice($nums, 0, $k));
+        $part2 = array_reverse(array_slice($nums, $k - $len));
+        $nums = array_merge($part1, $part2);
+        return $nums;
     }
 }
 // @lc code=end
-// $nums = [1, 2, 3, 4, 5, 6, 7];
-$nums = [-1];
-// $k = 3;
+$nums = [1, 2, 3, 4, 5, 6, 7];
 $k = 2;
+
+// $nums = [1, 2];
+$k = 3;
 print_r((new Solution())->rotate($nums, $k));
