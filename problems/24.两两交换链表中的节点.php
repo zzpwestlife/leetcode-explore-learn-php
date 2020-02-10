@@ -65,6 +65,7 @@ class Solution
 
     function swapPairs($head)
     {
+        // 递归函数的含义，返回后续所有节点两两交换之后的头节点
         // terminator
         if ($head === null || $head->next === null) {
             return $head;
