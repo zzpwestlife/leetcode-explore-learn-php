@@ -45,12 +45,6 @@
  */
 class Solution
 {
-
-    /**
-     * @param TreeNode $root
-     * @return Integer
-     */
-    // TODO 重复做，记住
     function maxDepth($root)
     {
         if ($root === null) return 0;

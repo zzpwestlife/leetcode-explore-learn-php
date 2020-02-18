@@ -60,26 +60,25 @@
  */
 class Solution
 {
+
     /**
      * @param TreeNode $root
      * @return Boolean
      */
-    // TODO 不熟悉，多做
     function isValidBST($root)
     {
         return $this->helper($root, null, null);
     }
 
-    // 递归函数的含义，返回当前 node 为根节点的子树是否为 bst
-    private function helper($node, $lower, $upper)
+    // 递归函数的含义，返回以当前节点为根节点的子树是否为 bst
+    // 添加两个辅助变量，记录遍历到当前节点时，节点值的上下界
+    private function helper($node, $upper, $lower)
     {
-        // terminator
         if ($node === null) return true;
-        // drill down
-        if ($lower !== null && $node->val <= $lower) return false;
         if ($upper !== null && $node->val >= $upper) return false;
-        if (false === $this->helper($node->left, $lower, $node->val)) return false;
-        if (false === $this->helper($node->right, $node->val, $upper)) return false;
+        if ($lower !== null && $node->val <= $lower) return false;
+        if (false === $this->helper($node->left, $node->val, $lower)) return false;
+        if (false === $this->helper($node->right, $upper, $node->val)) return false;
         return true;
     }
 }
