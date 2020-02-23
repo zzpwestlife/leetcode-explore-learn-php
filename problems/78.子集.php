@@ -38,20 +38,32 @@
 // @lc code=start
 class Solution
 {
-
+    protected $result;
     /**
      * @param Integer[] $nums
      * @return Integer[][]
      */
     function subsets($nums)
     {
-        $result = [];
-        $stack = new SplStack();
-        foreach ($nums as $value) { }
-        return $result;
+        // 画出递归树，答案是遍历递归树的所有节点
+        $this->result[] = [];
+        $this->sub($nums, [], 0);
+        return $this->result;
     }
 
-    private function sub($nums, $cur)
-    { }
+    private function sub($nums, $list, $start)
+    {
+        if (count($list) == count($nums)) {
+            return;
+        }
+        for ($i = $start; $i < count($nums); ++$i) {
+            $list[] = $nums[$i];
+            $this->result[] = $list;
+            $this->sub($nums, $list, $i + 1);
+            array_pop($list);
+        }
+    }
 }
 // @lc code=end
+$nums = [1, 2, 3];
+print_r((new Solution())->subsets($nums));

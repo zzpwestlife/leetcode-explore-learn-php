@@ -34,32 +34,36 @@
 // @lc code=start
 class Solution
 {
-
     /**
      * @param String $digits
      * @return String[]
      */
     function letterCombinations($digits)
     {
-        $result = [];
-        if ($digits === null || strlen($digits) == 0) {
-            return $result;
-        }
-
         $map = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
-        // 队列解法
-        $queue = new SplQueue();
-        for ($i = 0; $i < strlen($digits); ++$i) {
-            $num = (int) (substr($digits, $i, 1));
-            if ($map[$num]) {
-                $newQueue = new SplQueue();
-                while ($queue->count()) {
-                    
+        $digitCount = strlen($digits);
+        if ($digitCount == 0) return [];
 
-                    for ($j = 0; $j < strlen($map[$num]); ++$j) { }
+        $digits = str_split($digits, 1);        // 不要用回溯了，这就是个队列
+        $queue = str_split($map[reset($digits)]);
+        if ($digitCount == 1) return $queue;
+
+        for ($i = 1; $i < $digitCount; ++$i) {
+            $chars = str_split($map[$digits[$i]], 1);
+            if (count($chars) == 0) continue;
+            // 队列不为空，且队列内的元素长度小于当前遍历层数
+            while (strlen(reset($queue)) < $i + 1) {
+                $one = array_shift($queue);
+                foreach ($chars as $char) {
+                    $queue[] = $one . $char;
                 }
             }
         }
+
+        return $queue;
     }
 }
 // @lc code=end
+$digits = "23";
+print_r((new Solution())->letterCombinations($digits));
+echo PHP_EOL;
