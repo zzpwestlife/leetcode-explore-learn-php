@@ -43,28 +43,26 @@ class Solution
      */
     function subsetsWithDup($nums)
     {
-        if (empty($nums)) return [[]];
-        sort($nums);
-        $used = array_fill(0, count($nums), false);
-        $this->ss($nums, [], 0, $used);
         $this->result[] = [];
+        $count = count($nums);
+        if ($count == 0) return $this->result;
+        sort($nums);
+        $this->_subsetsWithDup($nums, [], 0);
         return $this->result;
     }
 
-    private function ss($nums, $path, $start, $used)
+    private function _subsetsWithDup($nums, $path, $start)
     {
         if (count($path) == count($nums)) {
             return;
         }
 
         for ($i = $start; $i < count($nums); ++$i) {
-            if ($i > 0 && $nums[$i] == $nums[$i - 1] && !$used[$i - 1]) continue;
+            if ($i > $start && $nums[$i] == $nums[$i - 1]) continue;
             $path[] = $nums[$i];
-            $used[$i] = true;
             $this->result[] = $path;
-            $this->ss($nums, $path, $i + 1, $used);
+            $this->_subsetsWithDup($nums, $path, $i + 1);
             array_pop($path);
-            $used[$i] = false;
         }
     }
 }

@@ -38,29 +38,31 @@
 // @lc code=start
 class Solution
 {
-    protected $result;
+    protected $result = [];
     /**
      * @param Integer[] $nums
      * @return Integer[][]
      */
     function subsets($nums)
     {
-        // 画出递归树，答案是遍历递归树的所有节点
         $this->result[] = [];
-        $this->sub($nums, [], 0);
+        $count = count($nums);
+        if ($count == 0) return $this->result;
+        $this->_subsets($nums, [], 0);
         return $this->result;
     }
 
-    private function sub($nums, $list, $start)
+    private function _subsets($nums, $path, $start)
     {
-        if (count($list) == count($nums)) {
+        if (count($path) == count($nums)) {
             return;
         }
+
         for ($i = $start; $i < count($nums); ++$i) {
-            $list[] = $nums[$i];
-            $this->result[] = $list;
-            $this->sub($nums, $list, $i + 1);
-            array_pop($list);
+            $path[] = $nums[$i];
+            $this->result[] = $path;
+            $this->_subsets($nums, $path, $i + 1);
+            array_pop($path);
         }
     }
 }

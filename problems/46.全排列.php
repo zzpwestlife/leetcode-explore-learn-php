@@ -41,26 +41,24 @@ class Solution
      */
     function permute($nums)
     {
-        $len = count($nums);
-        if ($len == 0) return $this->result;
-        $used = array_fill(0, $len, false);
-        $this->dfs($nums, 0, [], $used);
+        $count = count($nums);
+        if ($count == 0) return $this->result;
+        $this->_permute($nums, []);
         return $this->result;
     }
 
-    private function dfs($nums, $depth, $path, $used)
+    private function _permute($nums, $path)
     {
-        if ($depth == count($nums)) {
+        if (count($path) == count($nums)) {
             $this->result[] = $path;
             return;
         }
+
         for ($i = 0; $i < count($nums); ++$i) {
-            if ($used[$i] === true) continue;
+            if (in_array($nums[$i], $path)) continue;
             $path[] = $nums[$i];
-            $used[$i] = true;
-            $this->dfs($nums, $depth + 1, $path, $used);
+            $this->_permute($nums, $path);
             array_pop($path);
-            unset($used[$i]);
         }
     }
 }

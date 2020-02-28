@@ -42,24 +42,24 @@ class Solution
      */
     function combine($n, $k)
     {
-        if ($k <= 0 || $n <= 0 || $k > $n) return [];
-        $this->generateCombine($n, $k, [], 1);
-        return $this->result;
+        if ($n <= 0 || $k <= 0 || $k > $n) return $this->result;
+        $this->_combine($n, $k, [], 1);
+        return $this->result;   
     }
-    private function generateCombine($n, $k, $list, $start)
+
+    private function _combine($n, $k, $path, $start)
     {
-        // terminator
-        if (count($list) == $k) {
-            $this->result[] = $list;
+        if (count($path) == $k) {
+            $this->result[] = $path;
             return;
         }
 
         // left = $n - $i + 1
-        // need = $k - count($list)
-        for ($i = $start; $n - $i + 1 >= $k - count($list); ++$i) {
-            $list[] = $i;
-            $this->generateCombine($n, $k, $list, $i + 1);
-            array_pop($list);
+        // need = $k = count($path)
+        for ($i = $start; $n - $i + 1 >= $k - count($path); ++$i) {
+            $path[] = $i;
+            $this->_combine($n, $k, $path, $i + 1);
+            array_pop($path);
         }
     }
 }

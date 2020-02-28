@@ -47,38 +47,33 @@
  *     function __construct($value) { $this->val = $value; }
  * }
  */
-class Solution {
-    protected $result = [];
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     public $val = null;
+ *     public $left = null;
+ *     public $right = null;
+ *     function __construct($value) { $this->val = $value; }
+ * }
+ */
+class Solution
+{
+
     /**
      * @param TreeNode $root
      * @return Integer[][]
      */
-    function levelOrder1($root) {
-        $this->dfs4LevelOrder($root, 0);
-        return $this->result;
-    }
-
-    private function dfs4LevelOrder($root, $level)
+    function levelOrder($root)
     {
-        if ($root === null) return;
-
-        $this->result[$level][] = $root->val;
-        $this->dfs4LevelOrder($root->left, $level + 1);
-        $this->dfs4LevelOrder($root->right, $level + 1);
-    }
-
-    function levelOrder($root) {
-        $res = [];
-        if ($root === null) return $res;
+        $result = [];
+        if ($root === null) return $result;
         $queue = new SplQueue();
-        // 将根节点放入到队列中，然后不断遍历队列
         $queue->enqueue($root);
         while ($count = $queue->count()) {
-            // 将当前队列元素都拿出来，放到一个临时 list 中
-            $tmp = [];
+            $currentLevel = [];
             for ($i = 0; $i < $count; ++$i) {
                 $node = $queue->dequeue();
-                $tmp[] = $node->val;
+                $currentLevel[] = $node->val;
                 if ($node->left !== null) {
                     $queue->enqueue($node->left);
                 }
@@ -86,10 +81,12 @@ class Solution {
                     $queue->enqueue($node->right);
                 }
             }
-            $res[] = $tmp;
+            $result[] = $currentLevel;
         }
-        return $res;
+
+        return $result;
     }
 }
 // @lc code=end
-
+$root = [3, 9, 20, null, null, 15, 7];
+print_r((new Solution())->levelOrder($root));

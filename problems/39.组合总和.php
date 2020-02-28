@@ -58,28 +58,25 @@ class Solution
      */
     function combinationSum($candidates, $target)
     {
-        if ($target <= 0) return [];
+        if ($target <= 0) return $this->result;
         sort($candidates);
         $this->combine($candidates, $target, [], 0);
         return $this->result;
     }
 
-    private function combine($nums, $target, $list, $start)
-    {
-        // terminator
+    private function combine($candidates, $target, $path, $start) {
         if ($target < 0) return;
         if ($target == 0) {
-            $this->result[] = $list;
+            $this->result[] = $path;
             return;
         }
 
-        for ($i = $start; $i < count($nums); ++$i) {
-            if ($target - $nums[$i] < 0) break;
-            $list[] = $nums[$i];
-            // 数字可重复使用
-            $this->combine($nums, $target - $nums[$i], $list, $i);
-            // 回溯
-            array_pop($list);
+        for ($i = $start; $i < count($candidates); ++$i) {
+            // 剪枝
+            if ($target - $candidates[$i] < 0) continue;
+            $path[] = $candidates[$i];
+            $this->combine($candidates, $target - $candidates[$i], $path, $i);
+            array_pop($path);
         }
     }
 }

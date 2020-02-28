@@ -42,20 +42,63 @@
  */
 
 // @lc code=start
-class Solution {
+class Solution
+{
 
     /**
      * @param String[][] $grid
      * @return Integer
      */
-    function numIslands($grid) {
-        // 广度优先遍历 好理解一些
+    function numIslands($grid)
+    {
         $rows = count($grid);
         if ($rows == 0) return 0;
         $cols = count($grid[0]);
-        $visited = array_fill(0, $rows, array_fill(0, $cols, false));
+        $count = 0;
+        $directions = [[-1, 0], [0, -1], [1, 0], [0, 1]];
+        $visited = array_fill(0, $rows, array_fill(0, $cols, 0));
         $queue = new SplQueue();
+        for ($i = 0; $i < $rows; ++$i) {
+            for ($j = 0; $j < $cols; ++$j) {
+                if (!$visited[$i][$j] && $grid[$i][$j] == '1') {
+                    $count++;
+                    $visited[$i][$j] = 1;
+                    $queue->enqueue($i * $cols + $j);
+                    while ($queue->count()) {
+                        $one = $queue->dequeue();
+                        $x = (int) ($one / $cols);
+                        $y = $one % $cols;
+                        echo 'x: ' . $x . ' y: ' . $y . PHP_EOL;
+                        for ($m = 0; $m < 4; ++$m) {
+                            $newX = $x + $directions[$m][0];
+                            $newY = $y + $directions[$m][1];
+                            if (
+                                $this->inArea($newX, $newY, $rows, $cols)
+                                && !$visited[$newX][$newY]
+                                && $grid[$newX][$newY] == '1'
+                            ) {
+                                $queue->enqueue($newX * $cols + $newY);
+                                $visited[$newX][$newY] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    private function inArea($x, $y, $rows, $cols)
+    {
+        if ($x < 0 || $y < 0) return false;
+        if ($x >= $rows || $y >= $cols) return false;
+        return true;
     }
 }
 // @lc code=end
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$grid = [["1", "1", "1", "1", "0"], ["1", "1", "0", "1", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "0", "0", "0"]];
+print_r((new Solution())->numIslands($grid));
+echo PHP_EOL;

@@ -59,35 +59,34 @@ class Solution
      */
     function combinationSum2($candidates, $target)
     {
-        if ($target <= 0) return [];
+        if ($target <= 0) return $this->result;
         sort($candidates);
-        $this->helper($candidates, $target, [], 0);
+        $this->combineII($candidates, $target, [], 0);
         return $this->result;
     }
 
-    private function helper($nums, $target, $path, $start)
+    private function combineII($candidates, $target, $path, $start)
     {
-        if ($target < 0) return;
         if ($target == 0) {
             $this->result[] = $path;
             return;
         }
 
-        for ($i = $start; $i < count($nums); ++$i) {
-            if ($target - $nums[$i] < 0) break;
-            // 剪枝
-            if ($i > $start) {
-                if ($nums[$i] == $nums[$i - 1]) continue;
-            }
-            $path[] = $nums[$i];
-            $this->helper($nums, $target - $nums[$i], $path, $i + 1);
+        for ($i = $start; $i < count($candidates); ++$i) {
+            // 两次剪枝
+            if ($target - $candidates[$i] < 0) continue;
+            if ($i > $start && $candidates[$i] == $candidates[$i - 1]) continue;
+            $path[] = $candidates[$i];
+            $this->combineII($candidates, $target - $candidates[$i], $path, $i + 1);
             array_pop($path);
         }
     }
 }
 // @lc code=end
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $candidates = [10, 1, 2, 7, 6, 1, 5];
 $target = 8;
 $result = (new Solution())->combinationSum2($candidates, $target);
-// print_r($result);
+print_r($result);
 echo PHP_EOL;
