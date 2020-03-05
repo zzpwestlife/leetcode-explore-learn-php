@@ -42,29 +42,14 @@ class Solution
     function letterCombinations($digits)
     {
         $map = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
-        if (strlen($digits) == 0) return $this->result;
-        $this->backtrack($digits, $map, [], 0);
+        $len = strlen($digits);
+        if ($len == 0) return $this->result;
+        $this->_letterCombinations($digits, $map, [], 0);
         return $this->result;
     }
 
-    private function backtrack($digits, $map, $path, $start)
-    {
-        if (count($path) == strlen($digits)) {
-            $this->result[] = implode('', $path);
-            return;
-        }
-
-        for ($i = $start; $i < strlen($digits); ++$i) {
-            $chars = $map[substr($digits, $i, 1)];
-            if (empty($chars)) continue;
-            for ($j = 0; $j < strlen($chars); ++$j) {
-                $char = substr($chars, $j, 1);
-                $path[] = $char;
-                $this->backtrack($digits, $map, $path, $i + 1);
-                array_pop($path);
-            }
-        }
-    }
+    private function _letterCombinations($digits, $map, $path, $start)
+    { }
 }
 // @lc code=end
 error_reporting(E_ALL);
