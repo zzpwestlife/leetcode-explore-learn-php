@@ -82,29 +82,24 @@ class Solution
 
     function coinChange($coins, $amount)
     {
+        if (count($coins) == 0 || $amount <= 0) return -1;
         // 自底向上 数组大小为 amount + 1，初始值也为 amount + 1
         $dp = array_fill(0, $amount + 1, $amount + 1);
-        // base case
         $dp[0] = 0;
         for ($i = 1; $i <= $amount; ++$i) {
-            // 内层 for 在求所有子问题 + 1 的最小值
             foreach ($coins as $coin) {
-                // 子问题无解，跳过
-                if ($i - $coin < 0) {
-                    continue;
-                }
-
+                if ($i < $coin) continue;
                 $dp[$i] = min($dp[$i], $dp[$i - $coin] + 1);
             }
         }
 
-        if ($dp[$amount] == $amount + 1) {
-            return -1;
-        }
-        return $dp[$amount];
+        return ($dp[$amount] == $amount + 1) ? -1 : $dp[$amount];
     }
 }
 // @lc code=end
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $coins = [1, 2, 5];
 $amount = 11;
 

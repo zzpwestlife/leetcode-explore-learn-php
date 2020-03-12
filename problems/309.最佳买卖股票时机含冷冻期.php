@@ -41,26 +41,18 @@ class Solution
      */
     function maxProfit($prices)
     {
-        // dp
-        // dp[day][k][0 or 1]
-        // dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i])
-        // dp[i][1] = max(dp[i - 1][0], dp[i - 2][0] - prices[i])
-
-        $len = count($prices);
-        if ($len <= 1) {
-            return 0;
-        }
+        $n = count($prices);
+        if ($n <= 1) return 0;
 
         $dp_i_0 = 0;
-        $dp_i_1 = PHP_INT_MIN;
         $dp_pre_0 = 0;
-        for ($i = 0; $i < $len; ++$i) {
+        $dp_i_1 = PHP_INT_MIN;
+        for ($i = 0; $i < $n; ++$i) {
             $temp = $dp_i_0;
             $dp_i_0 = max($dp_i_0, $dp_i_1 + $prices[$i]);
             $dp_i_1 = max($dp_i_1, $dp_pre_0 - $prices[$i]);
             $dp_pre_0 = $temp;
         }
-
         return $dp_i_0;
     }
 }

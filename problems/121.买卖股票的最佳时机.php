@@ -47,30 +47,25 @@ class Solution
      */
     function maxProfit($prices)
     {
-        // dp[i][k][0 or 1]
-        // dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
-        // dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
-        // dp[0][k][0] = 0, dp[0][k][1] = -INF
-        // dp[i][0][0] = 0, dp[i][0][1] = -INF
-        // k = 1
-        // dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])
-        // dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][0][0] - prices[i]) 
-        //             = max(dp[i-1][1][1], -prices[i])
-        // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
-        // dp[i][1] = max(dp[i-1][1], -prices[i])
-        // dp[i][0] = 0, dp[i][1] = -INF
-        $len = count($prices);
-        if ($len <= 1) {
-            return 0;
+        $n = count($prices);
+        if ($n <= 1) return 0;
+        // dp[i][k][0/1], 0<=n<=n-1, k=0/1
+        // status transfer
+        // dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1]+prices[i]);
+        // dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0]-prices[i]);
+        // base case
+        // dp[0][k][0] = 0, dp[0][k][1] = -inf
+        // dp[i][0][0] = 0, dp[i][0][1] = -inf
+        // simplify
+        // dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i]);
+        // dp[i][1] = max(dp[i-1][1], -prices[i]);
+        $dp_i_0 = 0;
+        $dp_i_1 = PHP_INT_MIN;
+        for ($i = 0; $i < $n; ++$i) {
+            $dp_i_0 = max($dp_i_0, $dp_i_1 + $prices[$i]);
+            $dp_i_1 = max($dp_i_1, -$prices[$i]);
         }
-
-        $dpi0 = 0;
-        $dpi1 = PHP_INT_MIN;
-        for ($i = 0; $i < $len; ++$i) {
-            $dpi0 = max($dpi0, $dpi1 + $prices[$i]);
-            $dpi1 = max($dpi1, -$prices[$i]);
-        }
-        return $dpi0;
+        return $dp_i_0;
     }
 }
 // @lc code=end
