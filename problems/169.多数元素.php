@@ -39,15 +39,51 @@ class Solution
      * @param Integer[] $nums
      * @return Integer
      */
-    function majorityElement($nums)
+    function majorityElement1($nums)
     {
+        // 内置函数
+        $count = array_count_values($nums);
+        return array_search(max($count), $count);
+    }
+
+    function majorityElement2($nums)
+    {
+        // sort
         sort($nums);
         return $nums[floor(count($nums) / 2)];
     }
+
+    function majorityElement3($nums)
+    {
+        // hash table
+        $hash = [];
+        foreach ($nums as $num) {
+            if (!isset($hash[$num])) $hash[$num] = 0;
+            $hash[$num]++;
+        }
+        return array_search(max($hash), $hash);
+    }
+
+    function majorityElement($nums)
+    {
+        // Stack 开心消消乐
+        $stack = [];
+        foreach ($nums as $num) {
+            if (empty($stack) || end($stack) == $num) {
+                $stack[] = $num;
+            } else {
+                array_pop($stack);
+            }
+        }
+
+        return end($stack);
+    }
 }
 // @lc code=end
-$nums = [2, 2, 1, 1, 1, 2, 2, 1, 1, 1];
-// $nums = [3, 2, 3];
-// $nums = [3, 2, 3, 3];
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$nums = [2, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1];
+$nums = [3, 2, 3];
+$nums = [3, 2, 3, 3];
 // $nums = [3];
 echo (new Solution())->majorityElement($nums);
