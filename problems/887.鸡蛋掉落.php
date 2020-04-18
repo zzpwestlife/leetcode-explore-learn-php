@@ -74,7 +74,7 @@ class Solution
      * @param Integer $N
      * @return Integer
      */
-    function superEggDrop($K, $N)
+    function superEggDrop1($K, $N)
     {
         // dp(K, N) 数组的含义, K 个鸡蛋，N 层楼最坏情况最少需要扔几次鸡蛋
         // base case, dp(K, 0) = 0, dp(1, N) = N
@@ -116,6 +116,22 @@ class Solution
         }
         $this->memo[$K][$N] = $min;
         return $min;
+    }
+
+    function superEggDrop($K, $N)
+    {
+        // dp 数组含义 dp[K][m]：有 K 个鸡蛋，最多允许扔 m 次
+        // 最终返回 dp[K][m] == N 时的 m 值
+        // 状态转移方程 dp[K][m] = dp[K-1][m-1] + dp[K][m-1] + 1;
+        $dp = array_fill(0, $K + 1, array_fill(0, $N + 1, 0));
+        $m = 0;
+        while ($dp[$K][$m] < $N) {
+            $m++;
+            for ($k = 1; $k <= $K; ++$k) {
+                $dp[$k][$m] = $dp[$k - 1][$m - 1] + $dp[$k][$m - 1] + 1;
+            }
+        }
+        return $m;
     }
 }
 // @lc code=end
