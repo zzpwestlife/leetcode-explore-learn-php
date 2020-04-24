@@ -1,0 +1,93 @@
+<?php
+
+class Solution
+{
+    protected $ans = 0;
+    /**
+     * @param Integer[] $nums
+     * @return Integer
+     */
+    function reversePairs1($nums)
+    {
+        $ans = 0;
+        $n = count($nums);
+        if ($n == 0) return $ans;
+        // 单调栈
+        $stack = [];
+        array_push($stack, end($nums));
+        for ($i = $n - 2; $i >= 0; --$i) {
+            $tmp = [];
+            while (!empty($stack) && $nums[$i] <= end($stack)) {
+                array_unshift($tmp, array_pop($stack));
+            }
+
+            $ans += count($stack);
+            array_push($stack, $nums[$i]);
+            $stack = array_merge($stack, $tmp);
+        }
+        return $ans;
+    }
+
+    function reversePairs($nums)
+    {
+        // 归并排序 分治的思想
+        $n = count($nums);
+        if ($n < 2) return $this->ans;
+        $this->mergeSort($nums, 0, $n - 1);
+        return $this->ans;
+    }
+
+    private function mergeSort(&$nums, $left, $right)
+    {
+        if ($left >= $right) return;
+        $mid = $left + floor(($right - $left) / 2);
+        $this->mergeSort($nums, $left, $mid);
+        $this->mergeSort($nums, $mid + 1, $right);
+        $this->merge($nums, $left, $mid, $right);
+    }
+
+    /**
+     * $nums[$left, ... $mid], $nums[$mid + 1, ... , $right] 都已排序好
+     *
+     * @param [type] $nums
+     * @param [type] $left
+     * @param [type] $mid
+     * @param [type] $right
+     * @return void
+     */
+    private function merge(&$nums, $left, $mid, $right)
+    {
+        // 临时数组，只排序 [left, right] 这一段
+        $temp = [];
+        $i = $left;
+        $j = $mid + 1;
+        while ($i <= $mid && $j <= $right) {
+            if ($nums[$i] <= $nums[$j]) {
+                $temp[] = $nums[$i++];
+            } else {
+                // 逆序
+                $this->ans += $mid - $i + 1;
+                $temp[] = $nums[$j++];
+            }
+        }
+
+        while ($i <= $mid) {
+            $temp[] = $nums[$i++];
+        }
+
+        while ($j <= $right) {
+            $temp[] = $nums[$j++];
+        }
+
+        for ($k = 0; $k < count($temp); ++$k) {
+            $nums[$left + $k] = $temp[$k];
+        }
+    }
+}
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$nums = [1, 2, 1, 2, 1];
+// $nums = [7, 5, 6, 4];
+// $nums = range(1, 10000);
+echo (new Solution())->reversePairs($nums) . PHP_EOL;

@@ -1,3 +1,4 @@
+<?php
 /*
  * @lc app=leetcode.cn id=199 lang=php
  *
@@ -40,15 +41,36 @@
  *     function __construct($value) { $this->val = $value; }
  * }
  */
-class Solution {
+class Solution
+{
 
     /**
      * @param TreeNode $root
      * @return Integer[]
      */
-    function rightSideView($root) {
+    function rightSideView($root)
+    {
+        if ($root === null) return [];
+        $queue = new SplQueue();
+        $queue->enqueue($root);
+        $ans = [];
+        while (!$queue->isEmpty()) {
+            $count = $queue->count();
+            $curRight = null;
+            for ($i = 0; $i < $count; ++$i) {
+                $cur = $queue->dequeue();
+                $curRight = $cur->val;
+                if ($cur->left !== null) {
+                    $queue->enqueue($cur->left);
+                }
+                if ($cur->right !== null) {
+                    $queue->enqueue($cur->right);
+                }
+            }
+            $ans[] = $curRight;
+        }
 
+        return $ans;
     }
 }
 // @lc code=end
-

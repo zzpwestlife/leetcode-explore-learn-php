@@ -84,7 +84,7 @@ class Solution
      * @param String $str
      * @return Integer
      */
-    function myAtoi($str)
+    function myAtoi1($str)
     {
         if (empty($str)) return 0;
         $len = strlen($str);
@@ -149,6 +149,73 @@ class Solution
         }
         return $result;
     }
+
+    function myAtoi($str)
+    {
+        $n = strlen($str);
+        if ($n == 0) return 0;
+        $start = 0;
+        while ($start < $n && substr($str, $start, 1) == ' ') {
+            $start++;
+        }
+
+        if ($start == $n) return 0;
+        $isNeg = false;
+        if (substr($str, $start, 1) == '-') {
+            $isNeg = true;
+            $start++;
+        } elseif (substr($str, $start, 1) == '+') {
+            $start++;
+        }
+        if ($start == $n) return 0;
+
+        while ($start < $n && substr($str, $start, 1) == '0') {
+            $start++;
+        }
+
+        if ($start == $n) return 0;
+
+        $nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $ansNumStr = '';
+        if (in_array(substr($str, $start, 1), $nums)) {
+            $ansNumStr .= substr($str, $start, 1);
+            $start++;
+        }
+
+        while ($start < $n && (substr($str, $start, 1) == '0' || in_array(substr($str, $start, 1), $nums))) {
+            $ansNumStr .= substr($str, $start, 1);
+            if (strlen($ansNumStr) == 9) {
+                if ($ansNumStr > '214748364') {
+                    if ($isNeg) {
+                        return -2147483648;
+                    } else {
+                        return 2147483647;
+                    }
+                }
+                if ($ansNumStr == '214748364') {
+                    if ($isNeg && substr($str, $start, 1) >= 8) return -2147483648;
+                    if (!$isNeg && substr($str, $start, 1) >= 7) return  2147483647;
+                }
+            } elseif (strlen($ansNumStr) == 10) {
+                if ($isNeg) {
+                    if ($ansNumStr > 2147483648) return -2147483648;
+                } else {
+                    if ($ansNumStr > 2147483647) return 2147483647;
+                }
+            } elseif (strlen($ansNumStr) > 10) {
+                if ($isNeg) {
+                    return -2147483648;
+                } else {
+                    return 2147483647;
+                }
+            }
+            $start++;
+        }
+
+        if (empty($ansNumStr)) return 0;
+        if ($isNeg) return -$ansNumStr;
+        return $ansNumStr;
+    }
 }
 // @lc code=end
 error_reporting(E_ALL);
@@ -159,8 +226,10 @@ $str = '+a2341dfsd123';
 $str = '0000002033sdf233';
 $str = '-91283472332';
 $str = '20000000000000000000';
-// $str = '-000000000000001';
-// $str = '1095502006p8';
+$str = '-000000000000001';
+$str = '1095502006p8';
 $str = '2147483648';
 $str = '-2147483649';
+$str = '-+1';
+$str = "      -11919730356x";
 echo (new Solution())->myAtoi($str) . PHP_EOL;
