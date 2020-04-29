@@ -35,11 +35,12 @@
 class Solution
 {
     protected $result = [];
+    protected $ans = [];
     /**
      * @param Integer[] $nums
      * @return Integer[][]
      */
-    function permute($nums)
+    function permute1($nums)
     {
         $count = count($nums);
         if ($count == 0) return $this->result;
@@ -61,7 +62,37 @@ class Solution
             array_pop($path);
         }
     }
+
+    function permute($nums)
+    {
+        $n = count($nums);
+        if ($n <= 1) return $nums;
+
+        $used = [];
+        $this->backtrack($nums, $n, [], $used);
+        return $this->ans;
+    }
+
+    private function backtrack($nums, $n, $stack, $used)
+    {
+        if (count($stack) == $n) {
+            array_push($this->ans, $stack);
+            return;
+        }
+
+        for ($i = 0; $i < $n; ++$i) {
+            if (isset($used[$nums[$i]])) continue;
+            $used[$nums[$i]] = true;
+            $stack[] = $nums[$i];
+            $this->backtrack($nums, $n, $stack, $used);
+            unset($used[$nums[$i]]);
+            array_pop($stack);
+        }
+    }
 }
 // @lc code=end
-// $nums = [1, 2, 3];
-// print_r((new Solution())->permute($nums));
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$nums = [1, 2, 3];
+print_r((new Solution())->permute($nums));
