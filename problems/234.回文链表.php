@@ -48,7 +48,7 @@ class Solution
      * @param ListNode $head
      * @return Boolean
      */
-    function isPalindrome($head)
+    function isPalindrome1($head)
     {
         // double pointers 快慢指针
         if ($head == null || $head->next == null) {
@@ -69,7 +69,7 @@ class Solution
 
         // 用简单示例在纸上画图，可知此时，如果链表总数为偶数，slow 位于右中位
         // 如果为奇数，slow 位于中间位
-        // 反转 slow 至 链表尾的链表，使用迭代
+        // 反转 slow 至 链表尾的链表，使用递归
         $slow = $this->reverse($slow);
 
         // 遍历两个链表，比较
@@ -95,6 +95,46 @@ class Solution
         $head->next->next = $head;
         $head->next = null;
         return $last;
+    }
+
+    function isPalindrome($head)
+    {
+        if ($head === null || $head->next === null) return true;
+        // 快慢指针，遍历的同时反转链表前半部分
+        $fast = $slow = $head;
+        $pre = null;
+        while ($fast !== null && $fast->next !== null) {
+            // 这里的顺序会严重影响结果
+            $cur = $slow;
+            $fast = $fast->next->next;
+            $slow = $slow->next;
+
+            $cur->next = $pre;
+            $pre = $cur;
+        }
+
+        // 此时 slow 位于右中点
+        if ($fast !== null) {
+            $slow = $slow->next;
+        }
+
+        while ($pre !== null) {
+            if ($pre->val != $slow->val) return false;
+            $pre = $pre->next;
+            $slow = $slow->next;
+        }
+        return true;
+    }
+
+    private function dump($node)
+    {
+        $str = '';
+        while ($node !== null) {
+            $str .= $node->val . '->';
+            $node = $node->next;
+        }
+        $str .= 'null' . PHP_EOL;
+        return $str;
     }
 }
 // @lc code=end

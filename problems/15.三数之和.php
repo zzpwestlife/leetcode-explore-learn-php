@@ -84,5 +84,9 @@ class Solution
     }
 }
 // @lc code=end
-$nums = [0, 0, 0];
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$nums = [0, 0, 0, 0];
+$nums = [-1, 0, 1, 2, -1, -4];
 print_r((new Solution())->threeSum($nums));

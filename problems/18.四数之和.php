@@ -44,7 +44,7 @@ class Solution
      * @param Integer $target
      * @return Integer[][]
      */
-    function fourSum($nums, $target)
+    function fourSum1($nums, $target)
     {
         sort($nums);
         $ans = [];
@@ -91,8 +91,51 @@ class Solution
         }
         return array_values($ans);
     }
+
+    function fourSum($nums, $target)
+    {
+        $n = count($nums);
+        $ans = [];
+        if ($n < 4) return $ans;
+        sort($nums);
+        for ($i = 0; $i < $n - 3; ++$i) {
+            // if ($nums[$i] + 3 * $nums[$i + 1] > $target) return $ans;
+            // if ($i > 0 && $nums[$i + 1] == $nums[$i]) continue;
+            for ($j = $i + 1; $j < $n - 2; ++$j) {
+                // if ($nums[$i] + $nums[$j] + 2 * $nums[$j + 1] > $target) return $ans;
+                // if ($j > $i + 1 && $nums[$j + 1] == $nums[$j]) continue;
+                $left = $j + 1;
+                $right = $n - 1;
+                while ($left < $right) {
+                    // echo sprintf('i=%d, j=%d, left=%d, right=%d', $i, $j, $left, $right) . PHP_EOL;
+                    $diff3 = $nums[$i] + $nums[$j] + $nums[$left] + $nums[$right] - $target;
+                    if ($diff3 == 0) {
+                        $ans[] = [$nums[$i], $nums[$j], $nums[$left], $nums[$right]];
+                        while ($left < $right && $nums[$left + 1] == $nums[$left]) $left++;
+                        while ($left < $right && $nums[$right - 1] == $nums[$right]) $right--;
+                        $left++;
+                        $right--;
+                    } elseif ($diff3 < 0) {
+                        $left++;
+                    } else {
+                        $right--;
+                    }
+                }
+            }
+        }
+        return $ans;
+    }
 }
 // @lc code=end
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $nums = [-1, -5, -5, -3, 2, 5, 0, 4];
 $target = -7;
+$nums = [1, 0, -1, 0, -2, 2];
+$target = 0;
+$nums = [-3, -2, -1, 0, 0, 1, 2, 3];
+
+$nums = [-1, 0, 1, 2, -1, -4];
+$target = -1;
 print_r((new Solution())->fourSum($nums, $target));
