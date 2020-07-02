@@ -1,3 +1,4 @@
+<?php
 /*
  * @lc app=leetcode.cn id=703 lang=php
  *
@@ -37,21 +38,41 @@
  */
 
 // @lc code=start
-class KthLargest {
+class KthLargest
+{
+    private $heap;
+    private $k;
     /**
      * @param Integer $k
      * @param Integer[] $nums
      */
-    function __construct($k, $nums) {
-        
+    public function __construct($k, $nums)
+    {
+        $this->heap = new SplMinHeap();
+        $this->k = $k;
+        foreach ($nums as $num) {
+            $this->_add($num);
+        }
     }
-  
+
     /**
      * @param Integer $val
      * @return Integer
      */
-    function add($val) {
-        
+    public function add($val)
+    {
+        $this->_add($val);
+        return $this->heap->top();
+    }
+
+    private function _add($val)
+    {
+        if ($this->heap->count() < $this->k) {
+            $this->heap->insert($val);
+        } elseif ($val > $this->heap->top()) {
+            $this->heap->extract();
+            $this->heap->insert($val);
+        }
     }
 }
 
@@ -60,5 +81,10 @@ class KthLargest {
  * $obj = KthLargest($k, $nums);
  * $ret_1 = $obj->add($val);
  */
-// @lc code=end
 
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * $obj = KthLargest($k, $nums);
+ * $ret_1 = $obj->add($val);
+ */
+// @lc code=end

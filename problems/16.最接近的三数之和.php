@@ -36,10 +36,11 @@ class Solution
     function threeSumClosest($nums, $target)
     {
         sort($nums);
-        $len = count($nums);
+        $len = count($nums);    
         $distance = PHP_INT_MAX;
         $ans = null;
         for ($i = 0; $i < $len - 2; ++$i) {
+            if ($i > 0 && $nums[$i] == $nums[$i - 1]) continue;
             $left = $i + 1;
             $right = $len - 1;
             while ($left < $right) {
